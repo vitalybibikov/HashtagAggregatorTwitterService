@@ -5,17 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Infrastructure\**" />
-    <Compile Remove="Settings\**" />
-    <Content Remove="Infrastructure\**" />
-    <Content Remove="Settings\**" />
-    <EmbeddedResource Remove="Infrastructure\**" />
-    <EmbeddedResource Remove="Settings\**" />
-    <None Remove="Infrastructure\**" />
-    <None Remove="Settings\**" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <Folder Include="Infrastructure\Mappers\" />
     <Folder Include="wwwroot\" />
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.0-preview1-final" />
   </ItemGroup>
@@ -24,6 +14,14 @@
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0-preview1-final" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.0-preview1-final" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.0-preview1-final" />
+    <PackageReference Include="Microsoft.WindowsAzure.ConfigurationManager" Version="3.2.3" />
+    <PackageReference Include="TweetinviAPI" Version="1.2.0.1" />
+    <PackageReference Include="WindowsAzure.Storage" Version="8.1.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HashtagAggregatorTwitter.Contracts\HashtagAggregatorTwitter.Contracts.csproj" />
+    <ProjectReference Include="..\HashtagAggregatorTwitter.Models\HashtagAggregatorTwitter.Models.csproj" />
   </ItemGroup>
 
 </Project>

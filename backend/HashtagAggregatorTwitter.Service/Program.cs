@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
-namespace HashtagAggregatorTwitterService
+namespace HashtagAggregatorTwitter.Service
 {
     public class Program
     {
