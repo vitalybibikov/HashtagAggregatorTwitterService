@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HashtagAggregatorTwitter.Co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HashtagAggregatorTwitter.Models", "HashtagAggregatorTwitter.Models\HashtagAggregatorTwitter.Models.csproj", "{CD3A4CA8-B818-43D3-84F7-2920DFC47B49}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HashtagAggregatorTwitter.Data", "HashtagAggregatorTwitter.Data\HashtagAggregatorTwitter.Data.csproj", "{2925E6E9-949C-45FE-9B07-C0534D5015FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{CD3A4CA8-B818-43D3-84F7-2920DFC47B49}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD3A4CA8-B818-43D3-84F7-2920DFC47B49}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD3A4CA8-B818-43D3-84F7-2920DFC47B49}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2925E6E9-949C-45FE-9B07-C0534D5015FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2925E6E9-949C-45FE-9B07-C0534D5015FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2925E6E9-949C-45FE-9B07-C0534D5015FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2925E6E9-949C-45FE-9B07-C0534D5015FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
