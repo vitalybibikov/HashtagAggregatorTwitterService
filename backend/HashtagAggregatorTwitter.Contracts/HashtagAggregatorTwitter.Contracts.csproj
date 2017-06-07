@@ -9,8 +9,4 @@
     <PackageReference Include="TweetinviAPI" Version="1.2.0.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\HashtagAggregatorTwitter.Models\HashtagAggregatorTwitter.Models.csproj" />
-  </ItemGroup>
-
 </Project>

@@ -28,7 +28,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HashtagAggregatorTwitter.Contracts\HashtagAggregatorTwitter.Contracts.csproj" />
-    <ProjectReference Include="..\HashtagAggregatorTwitter.Models\HashtagAggregatorTwitter.Models.csproj" />
   </ItemGroup>
 
 </Project>

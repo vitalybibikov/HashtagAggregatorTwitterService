@@ -7,7 +7,6 @@ namespace HashtagAggregatorTwitter.Service.Infrastructure.Queues
 {
     public class TwitterQueue : ITwitterQueue
     {
-
         public void Enqueue(ITweet tweet)
         {
             throw new NotImplementedException();
