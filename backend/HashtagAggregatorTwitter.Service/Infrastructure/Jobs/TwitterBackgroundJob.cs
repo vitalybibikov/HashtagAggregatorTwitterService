@@ -4,6 +4,7 @@ using HashtagAggregator.Core.Contracts.Interface.Cqrs.Command;
 using HashtagAggregator.Shared.Common.Infrastructure;
 using HashtagAggregator.Shared.Logging;
 using HashtagAggregatorTwitter.Contracts;
+using HashtagAggregatorTwitter.Contracts.Jobs;
 using HashtagAggregatorTwitter.Models;
 using Microsoft.Extensions.Logging;
 using Tweetinvi;
@@ -11,7 +12,7 @@ using Tweetinvi.Parameters;
 
 namespace HashtagAggregatorTwitter.Service.Infrastructure.Jobs
 {
-    public class TwitterBackgroundJob
+    public class TwitterBackgroundJob : ITwitterBackgroundJob
     {
         private readonly ITwitterQueue queue;
         private readonly ILogger<TwitterBackgroundJob> logger;

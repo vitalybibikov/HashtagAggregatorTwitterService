@@ -40,7 +40,7 @@ namespace HashtagAggregatorTwitter.Service
 
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddHangfire(config => config.UseSqlServerStorage(connectionString));
-
+            services.AddMvc();
             IContainer container = new AutofacModulesConfigurator().Configure(services);
             GlobalConfiguration.Configuration.UseActivator(new AutofacContainerJobActivator(container));
 
