@@ -11,9 +11,9 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api/values",
+      "launchUrl": "api/heartbeat",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "develop"
+        "ASPNETCORE_ENVIRONMENT": "dev"
       }
     },
     "HashtagAggregatorTwitterService": {

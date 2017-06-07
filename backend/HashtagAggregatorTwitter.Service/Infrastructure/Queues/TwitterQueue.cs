@@ -1,20 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using HashtagAggregatorTwitter.Contracts;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using HashtagAggregator.Core.Contracts.Interface.Cqrs.Command;
+using HashtagAggregatorTwitter.Contracts.Queues;
+using HashtagAggregatorTwitter.Models;
+using Microsoft.WindowsAzure.Storage.Queue;
+using Newtonsoft.Json;
 using Tweetinvi.Models;
 
 namespace HashtagAggregatorTwitter.Service.Infrastructure.Queues
 {
     public class TwitterQueue : ITwitterQueue
     {
-        public void Enqueue(ITweet tweet)
+        private readonly IAzureQueueInitializer initializer;
+
+        public TwitterQueue(IAzureQueueInitializer initializer)
         {
-            throw new NotImplementedException();
+            this.initializer = initializer;
         }
 
-        public void EnqueueMany(IEnumerable<ITweet> tweet)
+        public async Task<ICommandResult> Enqueue(ITweet tweet)
         {
-            throw new NotImplementedException();
+            var message = JsonConvert.SerializeObject(tweet);
+            var result = new CloudQueueMessage(message);
+            await initializer.Queue.AddMessageAsync(result);
+            return new CommandResult
+            {
+                Success = true
+            };
+        }
+
+        public async Task<ICommandResult> EnqueueMany(IEnumerable<ITweet> tweets)
+        {
+            foreach (var tweet in tweets)
+            {
+                await Enqueue(tweet);
+            }
+            return new CommandResult {Success = true};
         }
     }
 }

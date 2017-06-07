@@ -7,6 +7,6 @@ namespace HashtagAggregatorTwitter.Contracts.Jobs
 {
     public interface ITwitterBackgroundJob
     {
-        Task<ICommandResult> Execute(HashTagWord hashTag);
+        Task<ICommandResult> Execute(HashTagWord hashTag, TimeSpan interval);
     }
 }

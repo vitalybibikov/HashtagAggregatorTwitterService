@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using HashtagAggregatorTwitter.Contracts;
 using HashtagAggregatorTwitter.Contracts.Jobs;
+using HashtagAggregatorTwitter.Contracts.Queues;
 using HashtagAggregatorTwitter.Service.Infrastructure;
 using HashtagAggregatorTwitter.Service.Infrastructure.Jobs;
 using HashtagAggregatorTwitter.Service.Infrastructure.Queues;
@@ -12,6 +13,7 @@ namespace HashtagAggregatorTwitter.Service.Configuration.Modules
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<AzureQueueInitializer>().As<IAzureQueueInitializer>();
             builder.RegisterType<BackgroundServiceWorker>().As<IBackgroundServiceWorker>();
             builder.RegisterType<TwitterBackgroundJob>().As<ITwitterBackgroundJob>();
             

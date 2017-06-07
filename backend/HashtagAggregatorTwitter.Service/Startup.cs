@@ -2,10 +2,9 @@
 using Autofac;
 
 using Hangfire;
-using HashtagAggregatorTwitter.Contracts;
 using HashtagAggregatorTwitter.Service.Configuration;
-using HashtagAggregatorTwitter.Service.Infrastructure.Queues;
 using HashtagAggregatorTwitter.Service.Settings;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -33,6 +32,7 @@ namespace HashtagAggregatorTwitter.Service
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            services.Configure<QueueSettings>(Configuration.GetSection("QueueSettings"));
             services.Configure<TwitterAuthSettings>(Configuration.GetSection("TwitterAuthSettings"));
             services.Configure<TwitterApiSettings>(Configuration.GetSection("TwitterApiSettings"));
 

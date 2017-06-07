@@ -4,6 +4,8 @@ namespace HashtagAggregatorTwitter.Contracts
 {
     public interface IBackgroundServiceWorker
     {
-        void Start();
+        void Start(string tag);
+
+        void Stop(string tag);
     }
 }
