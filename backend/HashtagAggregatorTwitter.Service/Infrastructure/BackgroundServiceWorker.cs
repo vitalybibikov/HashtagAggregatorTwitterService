@@ -1,4 +1,6 @@
 ﻿using System.Threading.Tasks;
+
+using HashtagAggregator.Core.Contracts.Interface.Cqrs.Command;
 using HashtagAggregatorTwitter.Contracts.Interface;
 
 namespace HashtagAggregatorTwitter.Service.Infrastructure
@@ -12,14 +14,14 @@ namespace HashtagAggregatorTwitter.Service.Infrastructure
             this.jobBalancer = jobBalancer;
         }
 
-        public async Task<bool> Start(string tag)
+        public async Task<ICommandResult> Start(string tag)
         {
             return await jobBalancer.TryCreateJob(tag);
         }
 
         public void Stop(string tag)
         {
-            jobBalancer.DeleteHashTag(tag);
+            jobBalancer.DeleteJob(tag);
         }
     }
 }

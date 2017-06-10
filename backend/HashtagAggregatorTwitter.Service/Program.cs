@@ -16,6 +16,5 @@ namespace HashtagAggregatorTwitter.Service
                 .UseDefaultServiceProvider(options =>
                     options.ValidateScopes = false)
                 .Build();
-
     }
 }

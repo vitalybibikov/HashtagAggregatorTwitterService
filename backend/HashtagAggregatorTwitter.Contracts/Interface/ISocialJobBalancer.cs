@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
+using HashtagAggregator.Core.Contracts.Interface.Cqrs.Command;
 
 namespace HashtagAggregatorTwitter.Contracts.Interface
 {
     public interface ISocialJobBalancer
     {
-        Task<bool> TryCreateJob(string tag);
+        Task<ICommandResult> TryCreateJob(string tag);
 
-        void DeleteHashTag(string tag);
+        void DeleteJob(string tag);
     }
 }

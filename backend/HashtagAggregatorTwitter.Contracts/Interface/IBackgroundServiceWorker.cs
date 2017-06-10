@@ -1,10 +1,11 @@
 ﻿using System.Threading.Tasks;
+using HashtagAggregator.Core.Contracts.Interface.Cqrs.Command;
 
 namespace HashtagAggregatorTwitter.Contracts.Interface
 {
     public interface IBackgroundServiceWorker
     {
-        Task<bool> Start(string tag);
+        Task<ICommandResult> Start(string tag);
 
         void Stop(string tag);
     }

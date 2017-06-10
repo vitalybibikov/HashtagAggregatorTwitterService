@@ -5,12 +5,12 @@ namespace HashtagAggregatorTwitter.Contracts.Interface.Jobs
 {
     public interface IJobManager
     {
-        ICommandResult AddJob(IJob job);
+        ICommandResult AddJob(IJobTask job);
 
-        ICommandResult DeleteJob(IJob job);
+        ICommandResult DeleteJob(IJobTask job);
 
-        ICommandResult ReconfigureJob(IJob job);
+        ICommandResult ReconfigureJob(IJobTask job);
 
-        Task<ICommandResult> StartNow(IJob job);
+        Task<ICommandResult> StartNow(IJobTask job);
     }
 }

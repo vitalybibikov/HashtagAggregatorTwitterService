@@ -9,27 +9,35 @@ namespace HashtagAggregatorTwitter.Service.Infrastructure
 {
     public class RecurringJobManager : IJobManager
     {
-        public ICommandResult AddJob(IJob job)
+        private readonly ITwitterJob job;
+
+        public RecurringJobManager(ITwitterJob job)
         {
-            RecurringJob.AddOrUpdate<IJob>(
-                job.JobId,
-                x => job.Execute(),
-                Cron.MinuteInterval(job.Interval));
+            this.job = job;
+        }
+
+        public ICommandResult AddJob(IJobTask task)
+        {
+            RecurringJob.AddOrUpdate<ITwitterJob>(
+                task.JobId,
+                x => x.Execute((TwitterJobTask) task),
+                Cron.MinuteInterval(task.Interval));
+
             return new CommandResult {Success = true};
         }
 
-        public ICommandResult DeleteJob(IJob job)
+        public ICommandResult DeleteJob(IJobTask task)
         {
-            RecurringJob.RemoveIfExists(job.JobId);
-            return new CommandResult { Success = true };
+            RecurringJob.RemoveIfExists(task.JobId);
+            return new CommandResult {Success = true};
         }
 
-        public async Task<ICommandResult> StartNow(IJob job)
+        public async Task<ICommandResult> StartNow(IJobTask task)
         {
-            return await job.Execute();
+            return await job.Execute((TwitterJobTask) task);
         }
 
-        public ICommandResult ReconfigureJob(IJob job)
+        public ICommandResult ReconfigureJob(IJobTask task)
         {
             throw new NotImplementedException();
         }

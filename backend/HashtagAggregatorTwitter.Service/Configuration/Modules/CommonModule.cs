@@ -15,7 +15,6 @@ namespace HashtagAggregatorTwitter.Service.Configuration.Modules
         {
             builder.RegisterType<AzureQueueInitializer>().As<IAzureQueueInitializer>();
             builder.RegisterType<RecurringJobManager>().As<IJobManager>();
-            builder.RegisterType<SocialJobBuilder>().As<IReccuringJobBuilder>();
             builder.RegisterType<TwitterJobBalancer>().As<ISocialJobBalancer>();
             builder.RegisterType<HangfireStorageAccessor>().As<IStorageAccessor>();
             builder.RegisterType<BackgroundServiceWorker>().As<IBackgroundServiceWorker>();

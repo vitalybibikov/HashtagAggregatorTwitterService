@@ -13,7 +13,7 @@ namespace HashtagAggregatorTwitter.Service.Configuration.Modules
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<ImmutableTwitterJob>().As<ITwitterBackgroundJob>();
+            builder.RegisterType<TwitterJob>().As<ITwitterJob>();
             builder.RegisterType<TwitterAuth>().As<ITwitterAuth>();
             builder.RegisterType<TwitterQueue>().As<ITwitterQueue>();
         }

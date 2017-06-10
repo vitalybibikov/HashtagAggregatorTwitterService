@@ -31,9 +31,12 @@ namespace HashtagAggregatorTwitter.Service.Infrastructure.Queues
 
         public async Task<ICommandResult> EnqueueMany(IEnumerable<ITweet> tweets)
         {
-            foreach (var tweet in tweets)
+            if (tweets != null)
             {
-                await Enqueue(tweet);
+                foreach (var tweet in tweets)
+                {
+                    await Enqueue(tweet);
+                }
             }
             return new CommandResult {Success = true};
         }

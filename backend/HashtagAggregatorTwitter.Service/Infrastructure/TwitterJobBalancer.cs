@@ -1,10 +1,12 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
+using HashtagAggregator.Core.Contracts.Interface.Cqrs.Command;
 using HashtagAggregator.Shared.Common.Infrastructure;
+using HashtagAggregatorTwitter.Contracts;
 using HashtagAggregatorTwitter.Contracts.Interface;
 using HashtagAggregatorTwitter.Contracts.Interface.Jobs;
 using HashtagAggregatorTwitter.Service.Settings;
-using Microsoft.Extensions.Options;
 
 namespace HashtagAggregatorTwitter.Service.Infrastructure
 {
@@ -14,65 +16,59 @@ namespace HashtagAggregatorTwitter.Service.Infrastructure
         private readonly IOptions<TwitterApiSettings> settings;
         private readonly IOptions<AppSettings> appSettings;
         private readonly IJobManager jobManager;
-        private readonly IReccuringJobBuilder builder;
 
         public TwitterJobBalancer(IStorageAccessor accessor,
             IOptions<TwitterApiSettings> settings,
             IOptions<AppSettings> appSettings,
-            IJobManager jobManager,
-            IReccuringJobBuilder builder)
+            IJobManager jobManager)
         {
             this.accessor = accessor;
             this.settings = settings;
             this.appSettings = appSettings;
             this.jobManager = jobManager;
-            this.builder = builder;
         }
 
-        public async Task<bool> TryCreateJob(string tag)
+        public async Task<ICommandResult> TryCreateJob(string tag)
         {
-            bool isAdded = false;
+            var isAdded = new CommandResult();
+            // todo: move to settings or make review interval
+            var initTask = new TwitterJobTask(new HashTagWord(tag), 30 * 60 * 24);
 
-            var initialJob = builder
-                .WithInterval(30 * 60 * 24) // todo: move to settings or make review interval
-                .WithTag(new HashTagWord(tag))
-                .Build();
-
-            if (CheckJobLimit(initialJob))
+            if (!CheckJobLimitExceeded(initTask))
             {
-                await AddJob(tag, initialJob);
-                isAdded = true;
+                await jobManager.StartNow(initTask);
+                AddJob(initTask);
+                isAdded.Success = true;
             }
-
+            else
+            {
+                isAdded.Message = "Job Limit Exceeded";
+            }
             return isAdded;
         }
 
-        private async Task AddJob(string tag, IJob initialJob)
+        private void AddJob(IJobTask task)
         {
-            await jobManager.StartNow(initialJob);
-
-            var reccuringJob = builder
-                .WithInterval(settings.Value.TwitterMessagePublishDelay)
-                .WithTag(new HashTagWord(tag))
-                .Build();
-
-            jobManager.AddJob(reccuringJob);
+            task = new TwitterJobTask(
+                task.Tag,
+                settings.Value.TwitterMessagePublishDelay);
+            jobManager.AddJob(task);
         }
 
-        public void DeleteHashTag(string tag)
+        public void DeleteJob(string tag)
         {
-            var job = builder
-                .WithTag(new HashTagWord(tag))
-                .Build();
-
-            jobManager.DeleteJob(job);
+            var task = new TwitterJobTask(
+                new HashTagWord(tag),
+                settings.Value.TwitterMessagePublishDelay
+            );
+            jobManager.DeleteJob(task);
         }
 
-        private bool CheckJobLimit(IJob job)
+        private bool CheckJobLimitExceeded(IJobTask task)
         {
             var list = accessor.GetJobsList();
-            bool isValid = list.Any(x => x.Id.Equals(job.JobId));
-            return isValid && list.Count <= appSettings.Value.MaxReccuringJobsSupported;
+            var isValid = list.Any(x => x.Id.Equals(task.JobId));
+            return isValid || list.Count >= appSettings.Value.MaxReccuringJobsSupported;
         }
     }
 }

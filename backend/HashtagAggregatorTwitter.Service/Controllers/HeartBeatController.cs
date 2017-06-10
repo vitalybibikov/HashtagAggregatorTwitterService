@@ -1,4 +1,5 @@
-﻿using HashtagAggregatorTwitter.Contracts;
+﻿using System.Threading.Tasks;
+using HashtagAggregatorTwitter.Contracts;
 using HashtagAggregatorTwitter.Contracts.Interface;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,10 +16,10 @@ namespace HashtagAggregatorTwitter.Service.Controllers
         }
 
         [HttpGet("start/{hashtag:required}")]
-        public IActionResult Start(string hashtag)
+        public async Task<IActionResult> Start(string hashtag)
         {
-            worker.Start(hashtag);
-            return Ok();
+            var result = await worker.Start(hashtag);
+            return Ok(result);
         }
 
         [HttpGet("stop/{hashtag:required}")]
