@@ -1,4 +1,4 @@
-﻿using HashtagAggregatorTwitter.Contracts.Queues;
+﻿using HashtagAggregatorTwitter.Contracts.Interface.Queues;
 using HashtagAggregatorTwitter.Service.Settings;
 using Microsoft.Extensions.Options;
 using Microsoft.WindowsAzure.Storage;

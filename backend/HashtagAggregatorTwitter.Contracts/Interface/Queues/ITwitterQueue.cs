@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using HashtagAggregator.Core.Contracts.Interface.Cqrs.Command;
 using Tweetinvi.Models;
 
-namespace HashtagAggregatorTwitter.Contracts.Queues
+namespace HashtagAggregatorTwitter.Contracts.Interface.Queues
 {
     public interface ITwitterQueue
     {

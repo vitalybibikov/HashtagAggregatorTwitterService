@@ -1,7 +1,6 @@
-﻿using System;
-using HashtagAggregator.Core.Contracts.Interface.Cqrs.Command;
+﻿using HashtagAggregator.Core.Contracts.Interface.Cqrs.Command;
 
-namespace HashtagAggregatorTwitter.Models
+namespace HashtagAggregatorTwitter.Contracts
 {
     public class CommandResult: ICommandResult
     {

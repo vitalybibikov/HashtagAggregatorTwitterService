@@ -1,4 +1,5 @@
 ﻿using HashtagAggregatorTwitter.Contracts;
+using HashtagAggregatorTwitter.Contracts.Interface;
 using HashtagAggregatorTwitter.Service.Settings;
 using Microsoft.Extensions.Options;
 using Tweetinvi;

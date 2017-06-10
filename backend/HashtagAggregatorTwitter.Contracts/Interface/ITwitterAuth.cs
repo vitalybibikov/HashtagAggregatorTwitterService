@@ -1,6 +1,6 @@
 ﻿using Tweetinvi.Models;
 
-namespace HashtagAggregatorTwitter.Contracts
+namespace HashtagAggregatorTwitter.Contracts.Interface
 {
     public interface ITwitterAuth
     {

@@ -1,6 +1,5 @@
-﻿using System;
-using Hangfire;
-using HashtagAggregatorTwitter.Contracts;
+﻿using HashtagAggregatorTwitter.Contracts;
+using HashtagAggregatorTwitter.Contracts.Interface;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HashtagAggregatorTwitter.Service.Controllers

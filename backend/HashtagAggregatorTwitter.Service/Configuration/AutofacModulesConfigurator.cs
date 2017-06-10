@@ -12,7 +12,9 @@ namespace HashtagAggregatorTwitter.Service.Configuration
         {
             var builder = new ContainerBuilder();
             builder.RegisterLogger();
+
             builder.RegisterModule<TwitterModule>();
+            builder.RegisterModule<CommonModule>();
 
             builder.Populate(services);
             return builder.Build();

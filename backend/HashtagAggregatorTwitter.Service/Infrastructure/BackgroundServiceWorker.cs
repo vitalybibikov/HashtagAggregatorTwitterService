@@ -1,48 +1,25 @@
-﻿using System;
-using Hangfire;
-using HashtagAggregator.Shared.Common.Infrastructure;
-using HashtagAggregatorTwitter.Contracts;
-using HashtagAggregatorTwitter.Contracts.Jobs;
-using HashtagAggregatorTwitter.Service.Settings;
-using Microsoft.Extensions.Options;
+﻿using System.Threading.Tasks;
+using HashtagAggregatorTwitter.Contracts.Interface;
 
 namespace HashtagAggregatorTwitter.Service.Infrastructure
 {
     public class BackgroundServiceWorker : IBackgroundServiceWorker
     {
-        private readonly ITwitterBackgroundJob twitterJob;
-        private readonly IOptions<TwitterApiSettings> settings;
+        private readonly ISocialJobBalancer jobBalancer;
 
-        public BackgroundServiceWorker(ITwitterBackgroundJob twitterJob, IOptions<TwitterApiSettings> settings)
+        public BackgroundServiceWorker(ISocialJobBalancer jobBalancer)
         {
-            this.twitterJob = twitterJob;
-            this.settings = settings;
+            this.jobBalancer = jobBalancer;
         }
 
-        public async void Start(string tag)
+        public async Task<bool> Start(string tag)
         {
-            await twitterJob.Execute(new HashTagWord(tag), TimeSpan.FromDays(30));
-
-            if (!String.IsNullOrEmpty(tag))
-            {
-                RecurringJob.AddOrUpdate<ITwitterBackgroundJob>(
-                    $"twitter-enqueue-{tag}-id",
-                    job => job.Execute(new HashTagWord(tag), GetDefaultInterval()),
-                    Cron.MinuteInterval(settings.Value.TwitterMessagePublishDelay));
-            }
-        }
-
-        private TimeSpan GetDefaultInterval()
-        {
-            return TimeSpan.FromMinutes(settings.Value.TwitterMessagePublishDelay);
+            return await jobBalancer.TryCreateJob(tag);
         }
 
         public void Stop(string tag)
         {
-            if (!String.IsNullOrEmpty(tag))
-            {
-                RecurringJob.RemoveIfExists($"twitter-enqueue-{tag}-id");
-            }
+            jobBalancer.DeleteHashTag(tag);
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using HashtagAggregator.Core.Contracts.Interface.Cqrs.Command;
-using HashtagAggregatorTwitter.Contracts.Queues;
-using HashtagAggregatorTwitter.Models;
+using HashtagAggregatorTwitter.Contracts;
+using HashtagAggregatorTwitter.Contracts.Interface.Queues;
 using Microsoft.WindowsAzure.Storage.Queue;
 using Newtonsoft.Json;
 using Tweetinvi.Models;
