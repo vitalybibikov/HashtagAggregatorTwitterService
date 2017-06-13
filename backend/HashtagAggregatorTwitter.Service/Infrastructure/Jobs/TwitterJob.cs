@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+
 using HashtagAggregator.Core.Contracts.Interface.Cqrs.Command;
 using HashtagAggregator.Shared.Common.Infrastructure;
 using HashtagAggregator.Shared.Logging;
@@ -8,6 +10,7 @@ using HashtagAggregatorTwitter.Contracts;
 using HashtagAggregatorTwitter.Contracts.Interface;
 using HashtagAggregatorTwitter.Contracts.Interface.Jobs;
 using HashtagAggregatorTwitter.Contracts.Interface.Queues;
+
 using Tweetinvi;
 using Tweetinvi.Parameters;
 
@@ -31,6 +34,7 @@ namespace HashtagAggregatorTwitter.Service.Infrastructure.Jobs
         {
             var tweetsParameters = SearchParams(task.Tag, TimeSpan.FromMinutes(task.Interval));
             var tweets = await SearchAsync.SearchTweets(tweetsParameters);
+            tweets = tweets.Where(x => x.CreatedAt > tweetsParameters.Since).ToList();
             var fail = ExceptionHandler.GetLastException()?.TwitterDescription;
             if (!String.IsNullOrEmpty(fail))
             {

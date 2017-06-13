@@ -4,7 +4,6 @@ using HashtagAggregatorTwitter.Contracts.Interface;
 using HashtagAggregatorTwitter.Contracts.Interface.Jobs;
 using HashtagAggregatorTwitter.Contracts.Interface.Queues;
 using HashtagAggregatorTwitter.Service.Infrastructure;
-using HashtagAggregatorTwitter.Service.Infrastructure.Jobs;
 using HashtagAggregatorTwitter.Service.Infrastructure.Queues;
 
 namespace HashtagAggregatorTwitter.Service.Configuration.Modules

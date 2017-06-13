@@ -1,7 +1,4 @@
-﻿using System.Threading.Tasks;
-using HashtagAggregator.Core.Contracts.Interface.Cqrs.Command;
-
-namespace HashtagAggregatorTwitter.Contracts.Interface.Jobs
+﻿namespace HashtagAggregatorTwitter.Contracts.Interface.Jobs
 {
     public interface IJob
     {

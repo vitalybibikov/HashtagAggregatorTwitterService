@@ -32,7 +32,8 @@ namespace HashtagAggregatorTwitter.Service.Infrastructure
         {
             var isAdded = new CommandResult();
             // todo: move to settings or make review interval
-            var initTask = new TwitterJobTask(new HashTagWord(tag), 30 * 60 * 24);
+            var intervalMonth = 30 * 60 * 24;
+            var initTask = new TwitterJobTask(new HashTagWord(tag), intervalMonth);
 
             if (!CheckJobLimitExceeded(initTask))
             {
@@ -49,18 +50,13 @@ namespace HashtagAggregatorTwitter.Service.Infrastructure
 
         private void AddJob(IJobTask task)
         {
-            task = new TwitterJobTask(
-                task.Tag,
-                settings.Value.TwitterMessagePublishDelay);
+            task = new TwitterJobTask(task.Tag, settings.Value.TwitterMessagePublishDelay);
             jobManager.AddJob(task);
         }
 
         public void DeleteJob(string tag)
         {
-            var task = new TwitterJobTask(
-                new HashTagWord(tag),
-                settings.Value.TwitterMessagePublishDelay
-            );
+            var task = new TwitterJobTask(new HashTagWord(tag), 0);
             jobManager.DeleteJob(task);
         }
 
