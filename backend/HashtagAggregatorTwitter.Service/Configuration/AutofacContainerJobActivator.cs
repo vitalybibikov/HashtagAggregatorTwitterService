@@ -1,5 +1,6 @@
 ﻿using System;
 using Autofac;
+
 using Hangfire;
 
 namespace HashtagAggregatorTwitter.Service.Configuration

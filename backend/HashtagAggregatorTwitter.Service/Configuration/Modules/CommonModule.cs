@@ -1,11 +1,12 @@
 ﻿using Autofac;
 
 using HahtagAggregatorTwitter.Storage;
-using HashtagAggregatorTwitter.Contracts.Interface;
-using HashtagAggregatorTwitter.Contracts.Interface.Jobs;
-using HashtagAggregatorTwitter.Contracts.Interface.Queues;
+using HashtagAggregator.Service.Contracts;
+using HashtagAggregator.Service.Contracts.Jobs;
+using HashtagAggregator.Service.Contracts.Queues;
 using HashtagAggregatorTwitter.Service.Infrastructure;
 using HashtagAggregatorTwitter.Service.Infrastructure.Queues;
+using IBackgroundServiceWorker = HashtagAggregatorTwitter.Contracts.Interface.IBackgroundServiceWorker;
 
 namespace HashtagAggregatorTwitter.Service.Configuration.Modules
 {

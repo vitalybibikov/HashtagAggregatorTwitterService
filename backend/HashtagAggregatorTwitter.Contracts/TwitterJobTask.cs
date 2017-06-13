@@ -1,6 +1,6 @@
 ﻿using System;
+using HashtagAggregator.Service.Contracts.Jobs;
 using HashtagAggregator.Shared.Common.Infrastructure;
-using HashtagAggregatorTwitter.Contracts.Interface.Jobs;
 
 namespace HashtagAggregatorTwitter.Contracts
 {
@@ -16,8 +16,8 @@ namespace HashtagAggregatorTwitter.Contracts
 
         public TwitterJobTask(HashTagWord tag, int interval)
         {
-            this.Tag = tag;
-            this.Interval = interval;
+            Tag = tag;
+            Interval = interval;
         }
     }
 }

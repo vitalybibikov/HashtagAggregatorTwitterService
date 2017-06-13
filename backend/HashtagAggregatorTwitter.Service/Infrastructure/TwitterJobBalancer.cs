@@ -2,10 +2,10 @@
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using HashtagAggregator.Core.Contracts.Interface.Cqrs.Command;
+using HashtagAggregator.Service.Contracts;
+using HashtagAggregator.Service.Contracts.Jobs;
 using HashtagAggregator.Shared.Common.Infrastructure;
 using HashtagAggregatorTwitter.Contracts;
-using HashtagAggregatorTwitter.Contracts.Interface;
-using HashtagAggregatorTwitter.Contracts.Interface.Jobs;
 using HashtagAggregatorTwitter.Service.Settings;
 
 namespace HashtagAggregatorTwitter.Service.Infrastructure

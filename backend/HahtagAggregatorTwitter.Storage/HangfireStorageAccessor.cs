@@ -2,8 +2,7 @@
 
 using Hangfire;
 using Hangfire.Storage;
-
-using HashtagAggregatorTwitter.Contracts.Interface;
+using HashtagAggregator.Service.Contracts;
 
 namespace HahtagAggregatorTwitter.Storage
 {

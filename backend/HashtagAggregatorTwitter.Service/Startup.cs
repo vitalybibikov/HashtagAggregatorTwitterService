@@ -2,7 +2,7 @@
 using Autofac;
 
 using Hangfire;
-using HashtagAggregatorTwitter.Contracts.Interface;
+using HashtagAggregator.Service.Contracts;
 using HashtagAggregatorTwitter.Service.Configuration;
 using HashtagAggregatorTwitter.Service.Settings;
 
@@ -54,15 +54,16 @@ namespace HashtagAggregatorTwitter.Service
             loggerFactory.AddDebug();
             loggerFactory.AddSerilog();
 
-            app.UseHangfireDashboard();
             app.UseHangfireServer();
-            app.UseMvc();
-
+       
             if (env.IsDevelopment())
             {
+                app.UseHangfireDashboard();
                 app.UseDeveloperExceptionPage();
                 accessor.CancelRecurringJobs();
             }
+
+            app.UseMvc();
         }
     }
 }

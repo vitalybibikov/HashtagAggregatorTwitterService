@@ -2,7 +2,7 @@
 
 namespace HashtagAggregatorTwitter.Contracts
 {
-    public class CommandResult: ICommandResult
+    public class CommandResult : ICommandResult
     {
         public bool Success { get; set; }
 

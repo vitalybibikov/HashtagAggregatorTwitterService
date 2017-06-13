@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using HashtagAggregatorTwitter.Contracts;
 using HashtagAggregatorTwitter.Contracts.Interface;
 using Microsoft.AspNetCore.Mvc;
 

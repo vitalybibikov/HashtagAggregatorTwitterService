@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Hangfire;
 using HashtagAggregator.Core.Contracts.Interface.Cqrs.Command;
+using HashtagAggregator.Service.Contracts.Jobs;
 using HashtagAggregatorTwitter.Contracts;
 using HashtagAggregatorTwitter.Contracts.Interface.Jobs;
 
