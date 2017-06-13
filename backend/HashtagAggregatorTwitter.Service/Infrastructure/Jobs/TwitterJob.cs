@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Hangfire;
 using Microsoft.Extensions.Logging;
 
 using HashtagAggregator.Core.Contracts.Interface.Cqrs.Command;
@@ -16,6 +17,7 @@ using Tweetinvi.Parameters;
 
 namespace HashtagAggregatorTwitter.Service.Infrastructure.Jobs
 {
+    [AutomaticRetry(Attempts = 1)]
     public class TwitterJob : ITwitterJob
     {
         private readonly ITwitterQueue queue;
@@ -53,7 +55,8 @@ namespace HashtagAggregatorTwitter.Service.Infrastructure.Jobs
                 new SearchTweetsParameters(hashTag.TagWithHash)
                 {
                     TweetSearchType = TweetSearchType.OriginalTweetsOnly,
-                    Since = DateTime.Now - span
+                    Since = DateTime.Now - span,
+                    Filters = TweetSearchFilters.Hashtags
                 };
             return tweetsParameters;
         }

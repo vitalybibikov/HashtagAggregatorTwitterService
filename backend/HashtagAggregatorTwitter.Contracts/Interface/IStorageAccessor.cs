@@ -6,5 +6,8 @@ namespace HashtagAggregatorTwitter.Contracts.Interface
     public interface IStorageAccessor
     {
         List<RecurringJobDto> GetJobsList();
+
+
+        void CancelRecurringJobs();
     }
 }
