@@ -17,10 +17,10 @@ namespace HashtagAggregatorTwitter.Service.Infrastructure.Queues
         public AzureQueueInitializer(IOptions<QueueSettings> queueSettings)
         {
             this.queueSettings = queueSettings;
-            Initilize();
+            Initialize();
         }
 
-        private void Initilize()
+        private void Initialize()
         {
             var storageAccount = CloudStorageAccount.Parse(queueSettings.Value.StorageConnectionString);
 

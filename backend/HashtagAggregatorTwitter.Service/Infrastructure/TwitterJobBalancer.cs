@@ -1,6 +1,6 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
+
 using HashtagAggregator.Core.Contracts.Interface.Cqrs.Command;
 using HashtagAggregator.Service.Contracts;
 using HashtagAggregator.Service.Contracts.Jobs;
