@@ -7,6 +7,7 @@ using HashtagAggregator.Service.Contracts.Jobs;
 using HashtagAggregator.Shared.Common.Infrastructure;
 using HashtagAggregatorTwitter.Contracts;
 using HashtagAggregatorTwitter.Service.Settings;
+using System.Linq;
 
 namespace HashtagAggregatorTwitter.Service.Infrastructure
 {
