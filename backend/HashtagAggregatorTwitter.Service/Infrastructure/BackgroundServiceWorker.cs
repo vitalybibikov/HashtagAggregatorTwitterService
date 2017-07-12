@@ -2,6 +2,8 @@
 
 using HashtagAggregator.Core.Contracts.Interface.Cqrs.Command;
 using HashtagAggregator.Service.Contracts;
+using IBackgroundServiceWorker = HashtagAggregatorTwitter.Contracts.Interface.IBackgroundServiceWorker;
+
 
 namespace HashtagAggregatorTwitter.Service.Infrastructure
 {

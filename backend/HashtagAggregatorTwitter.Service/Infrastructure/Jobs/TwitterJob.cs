@@ -36,7 +36,8 @@ namespace HashtagAggregatorTwitter.Service.Infrastructure.Jobs
         {
             var tweetsParameters = SearchParams(task.Tag, TimeSpan.FromMinutes(task.Interval));
             var tweets = await SearchAsync.SearchTweets(tweetsParameters);
-            tweets = tweets.Where(x => x.CreatedAt > tweetsParameters.Since).ToList();
+            tweets = tweets?.Where(x => x.CreatedAt > tweetsParameters.Since).ToList();
+
             var fail = ExceptionHandler.GetLastException()?.TwitterDescription;
             if (!String.IsNullOrEmpty(fail))
             {

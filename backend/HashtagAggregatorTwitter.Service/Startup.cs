@@ -54,9 +54,13 @@ namespace HashtagAggregatorTwitter.Service
             loggerFactory.AddDebug();
             loggerFactory.AddSerilog();
 
-            app.UseHangfireServer();
-       
-            if (env.IsDevelopment())
+            var options = new BackgroundJobServerOptions
+            {
+                ServerName = "TwitterServiceServer"
+            };
+            app.UseHangfireServer(options);
+
+            if (env.IsEnvironment("dev"))
             {
                 app.UseHangfireDashboard();
                 app.UseDeveloperExceptionPage();

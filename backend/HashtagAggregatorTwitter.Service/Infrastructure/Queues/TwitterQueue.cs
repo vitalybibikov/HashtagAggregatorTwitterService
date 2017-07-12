@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-
 using HashtagAggregator.Core.Contracts.Interface.Cqrs.Command;
 using HashtagAggregator.Service.Contracts.Queues;
 using HashtagAggregatorTwitter.Contracts;
 using HashtagAggregatorTwitter.Contracts.Interface.Queues;
-
 using Microsoft.WindowsAzure.Storage.Queue;
 using Newtonsoft.Json;
+using Tweetinvi;
 using Tweetinvi.Models;
 
 namespace HashtagAggregatorTwitter.Service.Infrastructure.Queues
@@ -23,7 +22,7 @@ namespace HashtagAggregatorTwitter.Service.Infrastructure.Queues
 
         public async Task<ICommandResult> Enqueue(ITweet tweet)
         {
-            var message = JsonConvert.SerializeObject(tweet);
+            var message = JsonConvert.SerializeObject(tweet.TweetDTO);
             var result = new CloudQueueMessage(message);
             await initializer.Queue.AddMessageAsync(result);
             return new CommandResult
