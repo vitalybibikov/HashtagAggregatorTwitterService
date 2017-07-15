@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
-
 using Hangfire;
 using Hangfire.Storage;
 using HashtagAggregator.Service.Contracts;
+using System.Linq;
+using System;
 
 namespace HahtagAggregatorTwitter.Storage
 {
@@ -16,7 +17,10 @@ namespace HahtagAggregatorTwitter.Storage
         public void CancelRecurringJobs()
         {
             var jobs = JobStorage.Current.GetConnection().GetRecurringJobs();
-            jobs.Clear();
+            foreach (var recurringJob in jobs)
+            {
+                RecurringJob.RemoveIfExists(recurringJob.Id);
+            }
         }
     }
 }

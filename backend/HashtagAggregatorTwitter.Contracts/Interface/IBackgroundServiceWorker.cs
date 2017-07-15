@@ -7,6 +7,6 @@ namespace HashtagAggregatorTwitter.Contracts.Interface
     {
         Task<ICommandResult> Start(string tag);
 
-        void Stop(string tag);
+        ICommandResult Stop(string tag);
     }
 }

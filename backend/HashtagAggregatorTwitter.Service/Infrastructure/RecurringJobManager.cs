@@ -23,7 +23,6 @@ namespace HashtagAggregatorTwitter.Service.Infrastructure
                 task.JobId,
                 x => x.Execute((TwitterJobTask) task),
                 Cron.MinuteInterval(task.Interval));
-
             return new CommandResult {Success = true};
         }
 

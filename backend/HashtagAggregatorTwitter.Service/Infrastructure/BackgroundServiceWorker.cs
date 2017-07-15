@@ -21,9 +21,9 @@ namespace HashtagAggregatorTwitter.Service.Infrastructure
             return await jobBalancer.TryCreateJob(tag);
         }
 
-        public void Stop(string tag)
+        public ICommandResult Stop(string tag)
         {
-            jobBalancer.DeleteJob(tag);
+            return jobBalancer.DeleteJob(tag);
         }
     }
 }

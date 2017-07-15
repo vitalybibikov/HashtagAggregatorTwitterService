@@ -1,17 +1,14 @@
 ﻿using System;
 using Autofac;
-
 using Hangfire;
 using HashtagAggregator.Service.Contracts;
 using HashtagAggregatorTwitter.Service.Configuration;
 using HashtagAggregatorTwitter.Service.Settings;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-
 using Serilog;
 
 namespace HashtagAggregatorTwitter.Service
@@ -43,13 +40,20 @@ namespace HashtagAggregatorTwitter.Service
             services.AddHangfire(config => config.UseSqlServerStorage(connectionString));
             services.AddMvc();
 
+            services.AddCors(options => options.AddPolicy("CorsPolicy",
+                builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials()));
+
             var container = new AutofacModulesConfigurator().Configure(services);
             GlobalConfiguration.Configuration.UseActivator(new AutofacContainerJobActivator(container));
 
             return container.Resolve<IServiceProvider>();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IStorageAccessor accessor)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory,
+            IStorageAccessor accessor)
         {
             loggerFactory.AddDebug();
             loggerFactory.AddSerilog();
@@ -64,9 +68,18 @@ namespace HashtagAggregatorTwitter.Service
             {
                 app.UseHangfireDashboard();
                 app.UseDeveloperExceptionPage();
-                accessor.CancelRecurringJobs();
             }
+            app.UseCors("CorsPolicy");
 
+            //app.UseIdentityServerAuthentication(new IdentityServerAuthenticationOptions
+            //{
+            //    Authority = Configuration.GetSection("EndpointSettings:AuthEndpoint").Value,
+            //    RequireHttpsMetadata = false, //todo: should be true when enabled https
+            //    ApiName = "twitterapiservice",
+            //    CacheDuration = TimeSpan.FromMinutes(10)
+            //});
+
+            accessor.CancelRecurringJobs();
             app.UseMvc();
         }
     }

@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
-
 using HashtagAggregator.Core.Contracts.Interface.Cqrs.Command;
 using HashtagAggregator.Service.Contracts;
 using HashtagAggregator.Service.Contracts.Jobs;
@@ -41,6 +40,7 @@ namespace HashtagAggregatorTwitter.Service.Infrastructure
                 await jobManager.StartNow(initTask);
                 AddJob(initTask);
                 isAdded.Success = true;
+                isAdded.Message = "Twitter Job created.";
             }
             else
             {
@@ -55,10 +55,10 @@ namespace HashtagAggregatorTwitter.Service.Infrastructure
             jobManager.AddJob(task);
         }
 
-        public void DeleteJob(string tag)
+        public ICommandResult DeleteJob(string tag)
         {
             var task = new TwitterJobTask(new HashTagWord(tag), 0);
-            jobManager.DeleteJob(task);
+            return jobManager.DeleteJob(task);
         }
 
         private bool CheckJobLimitExceeded(IJobTask task)
