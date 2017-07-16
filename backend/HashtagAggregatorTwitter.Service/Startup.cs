@@ -2,8 +2,8 @@
 using Autofac;
 using Hangfire;
 using HashtagAggregator.Service.Contracts;
+using HashtagAggregatorTwitter.Contracts.Settings;
 using HashtagAggregatorTwitter.Service.Configuration;
-using HashtagAggregatorTwitter.Service.Settings;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -33,6 +33,7 @@ namespace HashtagAggregatorTwitter.Service
             services.Configure<QueueSettings>(Configuration.GetSection("QueueSettings"));
             services.Configure<TwitterAuthSettings>(Configuration.GetSection("TwitterAuthSettings"));
             services.Configure<TwitterApiSettings>(Configuration.GetSection("TwitterApiSettings"));
+            services.Configure<HangfireSettings>(Configuration.GetSection("HangfireSettings"));
 
             var connectionString = Configuration.GetSection("AppSettings:ConnectionString").Value;
 
@@ -60,7 +61,7 @@ namespace HashtagAggregatorTwitter.Service
 
             var options = new BackgroundJobServerOptions
             {
-                ServerName = "TwitterServiceServer"
+                ServerName = Configuration.GetSection("HangfireSettings:ServerName").Value
             };
             app.UseHangfireServer(options);
 

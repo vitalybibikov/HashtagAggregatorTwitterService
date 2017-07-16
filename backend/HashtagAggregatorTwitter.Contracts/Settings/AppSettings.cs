@@ -1,4 +1,4 @@
-﻿namespace HashtagAggregatorTwitter.Service.Settings
+﻿namespace HashtagAggregatorTwitter.Contracts.Settings
 {
     public class AppSettings
     {

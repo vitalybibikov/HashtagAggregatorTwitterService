@@ -5,8 +5,9 @@ using HashtagAggregator.Service.Contracts;
 using HashtagAggregator.Service.Contracts.Jobs;
 using HashtagAggregator.Shared.Common.Infrastructure;
 using HashtagAggregatorTwitter.Contracts;
-using HashtagAggregatorTwitter.Service.Settings;
 using System.Linq;
+using HashtagAggregator.Service.Contracts.Queues;
+using HashtagAggregatorTwitter.Contracts.Settings;
 
 namespace HashtagAggregatorTwitter.Service.Infrastructure
 {
@@ -15,16 +16,19 @@ namespace HashtagAggregatorTwitter.Service.Infrastructure
         private readonly IStorageAccessor accessor;
         private readonly IOptions<TwitterApiSettings> settings;
         private readonly IOptions<AppSettings> appSettings;
+        private readonly IOptions<HangfireSettings> hangfireSettings;
         private readonly IJobManager jobManager;
 
         public TwitterJobBalancer(IStorageAccessor accessor,
             IOptions<TwitterApiSettings> settings,
             IOptions<AppSettings> appSettings,
+            IOptions<HangfireSettings> hangfireSettings,
             IJobManager jobManager)
         {
             this.accessor = accessor;
             this.settings = settings;
             this.appSettings = appSettings;
+            this.hangfireSettings = hangfireSettings;
             this.jobManager = jobManager;
         }
 
@@ -32,8 +36,9 @@ namespace HashtagAggregatorTwitter.Service.Infrastructure
         {
             var isAdded = new CommandResult();
             // todo: move to settings or make review interval
+            var qParams = new QueueParams(tag, hangfireSettings.Value.ServerName);
             var intervalMonth = 30 * 60 * 24;
-            var initTask = new TwitterJobTask(new HashTagWord(tag), intervalMonth);
+            var initTask = new TwitterJobTask(new HashTagWord(tag), qParams, intervalMonth);
 
             if (!CheckJobLimitExceeded(initTask))
             {
@@ -51,13 +56,15 @@ namespace HashtagAggregatorTwitter.Service.Infrastructure
 
         private void AddJob(IJobTask task)
         {
-            task = new TwitterJobTask(task.Tag, settings.Value.TwitterMessagePublishDelay);
+            var qParams = new QueueParams(task.Tag.NoHashTag, hangfireSettings.Value.ServerName);
+            task = new TwitterJobTask(task.Tag, qParams, settings.Value.TwitterMessagePublishDelay);
             jobManager.AddJob(task);
         }
 
         public ICommandResult DeleteJob(string tag)
         {
-            var task = new TwitterJobTask(new HashTagWord(tag), 0);
+            var qParams = new QueueParams(tag, hangfireSettings.Value.ServerName);
+            var task = new TwitterJobTask(new HashTagWord(tag), qParams, 0);
             return jobManager.DeleteJob(task);
         }
 

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace HashtagAggregatorTwitter.Service.Settings
+﻿namespace HashtagAggregatorTwitter.Contracts.Settings
 {
     public class QueueSettings
     {
