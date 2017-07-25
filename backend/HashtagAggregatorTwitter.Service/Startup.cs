@@ -24,6 +24,13 @@ namespace HashtagAggregatorTwitter.Service
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
+
+            if (env.IsEnvironment("dev"))
+            {
+                builder.AddApplicationInsightsSettings(developerMode: true);
+            }
+
+
             Configuration = builder.Build();
         }
 
@@ -39,6 +46,7 @@ namespace HashtagAggregatorTwitter.Service
 
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddHangfire(config => config.UseSqlServerStorage(connectionString));
+            services.AddApplicationInsightsTelemetry(Configuration);
             services.AddMvc();
 
             services.AddCors(options => options.AddPolicy("CorsPolicy",
@@ -49,7 +57,7 @@ namespace HashtagAggregatorTwitter.Service
 
             var container = new AutofacModulesConfigurator().Configure(services);
             GlobalConfiguration.Configuration.UseActivator(new AutofacContainerJobActivator(container));
-
+            services.AddApplicationInsightsTelemetry(Configuration);
             return container.Resolve<IServiceProvider>();
         }
 

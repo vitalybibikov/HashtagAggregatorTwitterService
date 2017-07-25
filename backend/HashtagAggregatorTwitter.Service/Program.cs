@@ -16,6 +16,7 @@ namespace HashtagAggregatorTwitter.Service
                 .UseUrls("http://localhost:5010/")
                 .UseDefaultServiceProvider(options =>
                     options.ValidateScopes = false)
+                .UseApplicationInsights()
                 .Build();
     }
 }
