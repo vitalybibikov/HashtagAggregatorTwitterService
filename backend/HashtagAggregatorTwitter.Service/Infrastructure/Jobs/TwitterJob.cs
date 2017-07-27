@@ -17,7 +17,6 @@ using Tweetinvi.Parameters;
 
 namespace HashtagAggregatorTwitter.Service.Infrastructure.Jobs
 {
-    [AutomaticRetry(Attempts = 1)]
     public class TwitterJob : ITwitterJob
     {
         private readonly ITwitterQueue queue;
@@ -32,6 +31,7 @@ namespace HashtagAggregatorTwitter.Service.Infrastructure.Jobs
             auth.Authenticate();
         }
 
+        [AutomaticRetry(Attempts = 1)]
         public async Task<ICommandResult> Execute(TwitterJobTask task)
         {
             var tweetsParameters = SearchParams(task.Tag, TimeSpan.FromMinutes(task.Interval));

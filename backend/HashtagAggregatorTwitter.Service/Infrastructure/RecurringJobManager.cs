@@ -5,16 +5,20 @@ using HashtagAggregator.Core.Contracts.Interface.Cqrs.Command;
 using HashtagAggregator.Service.Contracts.Jobs;
 using HashtagAggregatorTwitter.Contracts;
 using HashtagAggregatorTwitter.Contracts.Interface.Jobs;
+using HashtagAggregatorTwitter.Contracts.Settings;
+using Microsoft.Extensions.Options;
 
 namespace HashtagAggregatorTwitter.Service.Infrastructure
 {
     public class RecurringJobManager : IJobManager
     {
         private readonly ITwitterJob job;
+        private readonly IOptions<HangfireSettings> hangfireOptions;
 
-        public RecurringJobManager(ITwitterJob job)
+        public RecurringJobManager(ITwitterJob job, IOptions<HangfireSettings> hangfireOptions)
         {
             this.job = job;
+            this.hangfireOptions = hangfireOptions;
         }
 
         public ICommandResult AddJob(IJobTask task)
@@ -22,7 +26,8 @@ namespace HashtagAggregatorTwitter.Service.Infrastructure
             RecurringJob.AddOrUpdate<ITwitterJob>(
                 task.JobId,
                 x => x.Execute((TwitterJobTask) task),
-                Cron.MinuteInterval(task.Interval));
+                Cron.MinuteInterval(task.Interval),
+                queue: hangfireOptions.Value.ServerName);
             return new CommandResult {Success = true};
         }
 

@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Net;
 using Autofac;
 using Hangfire;
 using HashtagAggregator.Service.Contracts;
 using HashtagAggregatorTwitter.Contracts.Settings;
 using HashtagAggregatorTwitter.Service.Configuration;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -25,13 +28,19 @@ namespace HashtagAggregatorTwitter.Service
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
 
+            Configuration = builder.Build();
+
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom
+                .Configuration(Configuration)
+                .WriteTo.ApplicationInsightsTraces(
+                    Configuration.GetSection("ApplicationInsights:InstrumentationKey").Value)
+                .CreateLogger();
+
             if (env.IsEnvironment("dev"))
             {
                 builder.AddApplicationInsightsSettings(developerMode: true);
             }
-
-
-            Configuration = builder.Build();
         }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
@@ -67,15 +76,31 @@ namespace HashtagAggregatorTwitter.Service
             loggerFactory.AddDebug();
             loggerFactory.AddSerilog();
 
-            var options = new BackgroundJobServerOptions
+
+            app.UseExceptionHandler(options =>
             {
-                ServerName = Configuration.GetSection("HangfireSettings:ServerName").Value
-            };
-            app.UseHangfireServer(options);
+                options.Run(
+                    async context =>
+                    {
+                        context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
+                        var ex = context.Features.Get<IExceptionHandlerFeature>();
+                        if (ex != null)
+                        {
+                            var err = $"Error: {ex.Error.Message}{ex.Error.StackTrace}";
+                            Log.Error(ex.Error, "Server Error", ex);
+                            await context.Response.WriteAsync(err).ConfigureAwait(false);
+                        }
+                    });
+            });
+
+            app.UseHangfireServer(new BackgroundJobServerOptions
+            {
+                ServerName = Configuration.GetSection("HangfireSettings:ServerName").Value,
+                Queues = new[] {Configuration.GetSection("HangfireSettings:ServerName").Value}
+            });
             app.UseHangfireDashboard();
             if (env.IsEnvironment("dev"))
             {
-        
                 app.UseDeveloperExceptionPage();
             }
             app.UseCors("CorsPolicy");

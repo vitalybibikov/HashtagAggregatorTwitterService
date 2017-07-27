@@ -22,7 +22,6 @@ namespace HashtagAggregatorTwitter.Service.Infrastructure.Queues
         private void Initialize()
         {
             var storageAccount = CloudStorageAccount.Parse(queueSettings.Value.StorageConnectionString);
-
             var queueClient = storageAccount.CreateCloudQueueClient();
             queue = queueClient.GetQueueReference(queueSettings.Value.QueueName);
             queue.CreateIfNotExistsAsync();
