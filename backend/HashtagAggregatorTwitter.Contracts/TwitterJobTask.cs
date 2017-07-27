@@ -7,7 +7,7 @@ namespace HashtagAggregatorTwitter.Contracts
 {
     public class TwitterJobTask : IJobTask
     {
-        private const string JobIdPattern = "{0}-enqueue-id";
+        private const string JobIdPattern = "{0}-{1}-enqueue-id";
 
         public HashTagWord Tag { get; }
 
@@ -15,7 +15,7 @@ namespace HashtagAggregatorTwitter.Contracts
 
         public int Interval { get; }
 
-        public string JobId => String.Format(JobIdPattern, Tag.NoHashTag);
+        public string JobId => String.Format(JobIdPattern, Parameters.ServerName, Tag.NoHashTag);
 
         public TwitterJobTask(HashTagWord tag, QueueParams parameters, int interval)
         {

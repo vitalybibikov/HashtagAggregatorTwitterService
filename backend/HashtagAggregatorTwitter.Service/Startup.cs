@@ -66,7 +66,6 @@ namespace HashtagAggregatorTwitter.Service
 
             var container = new AutofacModulesConfigurator().Configure(services);
             GlobalConfiguration.Configuration.UseActivator(new AutofacContainerJobActivator(container));
-            services.AddApplicationInsightsTelemetry(Configuration);
             return container.Resolve<IServiceProvider>();
         }
 
@@ -113,7 +112,7 @@ namespace HashtagAggregatorTwitter.Service
             //    CacheDuration = TimeSpan.FromMinutes(10)
             //});
 
-            //accessor.CancelRecurringJobs();
+            accessor.CancelRecurringJobs();
             app.UseMvc();
         }
     }
