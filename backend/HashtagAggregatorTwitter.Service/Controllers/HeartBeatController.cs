@@ -16,6 +16,13 @@ namespace HashtagAggregatorTwitter.Service.Controllers
             this.worker = worker;
         }
 
+        [HttpGet("ping")]
+        [AllowAnonymous]
+        public IActionResult Ping()
+        {
+            return Ok();
+        }
+
         [HttpGet("start/{hashtag:required}")]
         public async Task<IActionResult> Start(string hashtag)
         {
