@@ -32,6 +32,7 @@ namespace HashtagAggregatorTwitter.Service.Infrastructure.Jobs
         }
 
         [AutomaticRetry(Attempts = 1)]
+        [Queue("twitterserver")]
         public async Task<ICommandResult> Execute(TwitterJobTask task)
         {
             var tweetsParameters = SearchParams(task.Tag, TimeSpan.FromMinutes(task.Interval));
